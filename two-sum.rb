@@ -34,15 +34,10 @@
 # @param {Integer} target
 # @return {Integer[]}
 def two_sum(nums, target)
-  result = Array.new(2)
   nums_map = {}
-  nums.each_with_index{ |n, i| nums_map[n] = i }
-  nums.each_with_index do |n, i|
-    index = nums_map[target - n]
-    if index && i != index
-      result[1] = i
-      result[0] = index
-    end
+  nums.size.times do |i|
+    second_value = target - nums[i]
+    return [nums_map[second_value], i] if !nums_map[second_value].nil?
+    nums_map[nums[i]] = i
   end
-  return result
 end
