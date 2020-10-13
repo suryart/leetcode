@@ -53,3 +53,30 @@ def add_two_numbers(l1, l2)
 
   return head
 end
+
+# solution with 1 loop
+def add_two_numbers(l1, l2)
+  carry = 0
+  dummy_head = ListNode.new
+  curr = dummy_head
+  p = l1
+  q = l2
+  while p || q
+    a = p ? p.val : 0
+    b = q ? q.val : 0
+    sum = a + b + carry
+    carry = sum > 9 ? 1 : 0
+
+    curr.next = ListNode.new(sum%10)
+    curr = curr.next
+
+    p = p.next if p
+    q = q.next if q
+  end
+
+  if carry > 0
+    curr.next = ListNode.new(carry)
+  end
+
+  return dummy_head.next
+end
