@@ -30,24 +30,26 @@
 # @return {String}
 def longest_palindrome(s)
   return "" if s.nil? || s.length < 1
-  max_palindrom = ""
+  start_index = 0
+  end_index = 0
   s.length.times do |i|
-    substring = longest_palindrome_substring(s, i, i)
-    max_palindrom = substring if substring.length > max_palindrom.length
-    substring = longest_palindrome_substring(s, i, i+1)
-    max_palindrom = substring if substring.length > max_palindrom.length
+    len1 = longest_palindrome_substring(s, i, i)
+    len2 = longest_palindrome_substring(s, i, i+1)
+    len = len1 > len2 ? len1 : len2
+    if len > (end_index - start_index)
+      start_index = i - (len - 1)/2
+      end_index = i + len/2
+    end
   end
-  return max_palindrom
+  return s[start_index..end_index]
 end
 
 def longest_palindrome_substring(s, left_index, right_index)
-  palindromic_string = ""
   while left_index >= 0 && right_index < s.length && s[left_index] == s[right_index]
-    palindromic_string = s[left_index..right_index]
     left_index -= 1
     right_index += 1
   end
-  palindromic_string
+  right_index - left_index - 1
 end
 
 # s = "babad"
