@@ -56,43 +56,71 @@ int_min = -2147483648 # -2^31integral number, which are ignored and have no effe
 
 # @param {String} s
 # @return {Integer}
+# def my_atoi(s)
+#   return 0 if s.empty?
+
+#   int_min = -2147483648 # -2^31
+#   int_max = 2147483647 # 2^32 - 1
+
+#   digits = []
+#   found_digits = false
+#   index = 0
+#   result = 0
+#   negative = false
+#   s.length.times do |index|
+#     char = s[index]
+#     break if ((char =~ /\d/) != 0) && found_digits
+#     cond = ((char =~ /\d/) != 0) && char != ' ' && !found_digits && !['+', '-'].include?(char)
+#     return 0 if cond
+#     next if char == ' ' && !found_digits
+
+#     found_digits = true
+#     if char == '+' || char == '-'
+#       negative = char == '-'
+#     elsif ((char =~ /\d/) == 0)
+#       digits << char.to_i
+#     end
+
+#   end
+
+#   return 0 if digits.empty?
+
+#   digits.each do |num|
+#     result = result * 10 + num
+#   end
+
+#   result = result * -1 if negative
+#   return int_max if (result > int_max)
+#   return int_min if (result < int_min)
+#   return result
+# end
+
 def my_atoi(s)
   return 0 if s.empty?
-
   int_min = -2147483648 # -2^31
   int_max = 2147483647 # 2^32 - 1
-
-  digits = []
-  found_digits = false
+  sign = 1
   index = 0
   result = 0
-  negative = false
-  s.length.times do |index|
-    char = s[index]
-    break if ((char =~ /\d/) != 0) && found_digits
-    cond = ((char =~ /\d/) != 0) && char != ' ' && !found_digits && !['+', '-'].include?(char)
-    return 0 if cond
-    next if char == ' ' && !found_digits
 
-    found_digits = true
-    if char == '+' || char == '-'
-      negative = char == '-'
-    elsif ((char =~ /\d/) == 0)
-      digits << char.to_i
-    end
-
+  while (index < s.length && s[index] == ' ')
+    index += 1
   end
 
-  return 0 if digits.empty?
+  if (s[index] == '+' || s[index] == '-')
+    sign = s[index] == '-' ? -1 : 1
+    index += 1
+  end
+  while (index < s.length && ((s[index] =~ /\d/) == 0))
+    num = s[index].to_i
 
-  digits.each do |num|
     result = result * 10 + num
+    index += 1
   end
-
-  result = result * -1 if negative
-  return int_max if (result > int_max)
-  return int_min if (result < int_min)
-  return result
+  if result > int_max
+    return (sign == -1) ? int_min : int_max
+  end
+  return (sign == -1 ? result * -1 : result)
 end
 
 # str = " 42"
@@ -111,4 +139,7 @@ end
 # p my_atoi(str)
 
 # str = "   +0 123"
+# p my_atoi(str)
+
+# str = "21474836460"
 # p my_atoi(str)
