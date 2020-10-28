@@ -21,16 +21,12 @@
 # @return {ListNode}
 def delete_duplicates(head)
   node = head
-  prev_node = node
-  while node
-    if prev_node.val != node.val
-      prev_node.next = node
-      prev_node = node
+  while !node.nil? && !node.next.nil?
+    if node.next.val == node.val
+      node.next = node.next.next
+    else
+      node = node.next
     end
-
-    node = node.next
   end
-  prev_node.next = nil if !prev_node.nil?
-
   return head
 end
